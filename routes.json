@@ -1,0 +1,27 @@
+[
+	{
+		"method":"GET",
+		"uri":"/",
+		"endpoint":"modules/sample/index.php"
+	},
+	{
+		"method":"POST",
+		"uri":"/api/read/:vendor/:product/sync",
+		"endpoint":"modules/sample/index.php"
+	},
+	{
+		"method":"ANY",
+		"uri":"/api/read/:vendor/sync",
+		"endpoint":"modules/sample/index.php"
+	},
+	{
+		"method":"ANY",
+		"uri":"/api/funct/testfunc",
+		"endpoint":"testfunc"
+	},
+	{
+		"method":"ANY",
+		"uri":"/api/rest_sample",
+		"endpoint":"restapi"
+	}
+]
