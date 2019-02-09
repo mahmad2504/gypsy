@@ -1,8 +1,8 @@
 [
 	{
-		"method":"GET",
-		"uri":"/",
-		"endpoint":"modules/sample/index.php"
+		"method":"ANY",
+		"uri":"/trello",
+		"endpoint":"modules/trello/index.php"
 	},
 	{
 		"method":"POST",
