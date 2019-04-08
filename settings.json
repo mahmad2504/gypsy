@@ -1,0 +1,94 @@
+{
+	"framework" : {
+		"jira" : {
+			"conf" : {
+				"mentor" : {
+					"url" : "http://jira.alm.mentorg.com:8080",
+					"cred" : {
+						"user" : "himp",
+						"pass" : "hmip",
+						"token" : ""
+					}
+				},
+				"atlassian" : {
+					"url" : "https://mentorgraphics.atlassian.net",
+					"cred" : {
+						"user" : "mahmad",
+						"pass" : "gsmp1000",
+						"token" : ""
+					}
+				}
+			}
+		},
+		"mongo" : {
+			"server" : "mongodb://localhost:27017",
+			"db" : "cvedb"
+		},
+		"routes" : [
+			{
+				"method" : "ANY",
+				"uri" : "/",
+				"endpoint" : "modules/importspage/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/imports",
+				"endpoint" : "modules/importspage/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/exports",
+				"endpoint" : "modules/exportspage/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/sync",
+				"endpoint" : "modules/sync/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/shipments",
+				"endpoint" : "modules/shipmentspage/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/invoices",
+				"endpoint" : "modules/invoicespage/index.php"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/graph/shipment/count",
+				"endpoint" : "modules/shipmentgraph/index.php?view=count"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/graph/shipment/category",
+				"endpoint" : "modules/shipmentgraph/index.php?view=category"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/graph/invoices/owners",
+				"endpoint" : "modules/invoicegraph/index.php?view=owner"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/graph/invoices/countries",
+				"endpoint" : "modules/invoicegraph/index.php?view=country"
+			},
+			{
+				"method" : "ANY",
+				"uri" : "/graph/invoices/teams",
+				"endpoint" : "modules/invoicegraph/index.php?view=team"
+			}
+		],
+		"data_folder" : "data",
+		"logfile" : "log.txt"
+	},
+	"app" : {
+		"trello" : {
+			"url" : "https://api.trello.com/1",
+			"key" : "005173e331a61db3768a13e6e9d1160e",
+			"token" : "0e457d47dbd6eb1ed558ac42f8ba03b94738cac35a738d991cdf797d6fcfbbe9"
+		}
+	}
+}

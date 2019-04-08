@@ -33,6 +33,9 @@ class http_request {
 		
 		$basepath = pathinfo($_SERVER['SCRIPT_NAME'])['dirname'];
 		$this->request_uri = explode('?',$_SERVER['REQUEST_URI'])[0];
+		if($basepath == "\\")
+			$basepath = "/";
+		
 		$this->request_uri = explode($basepath,$this->request_uri)[1];
 		$this->request_parts = explode("/",$this->request_uri);
 		array_shift($this->request_parts);
@@ -57,13 +60,12 @@ class http_request {
     }
 	function query()
 	{
-		$obj = new \StdClass();
-	
+		global $params;
 		foreach($_GET as $key=>$value)
-			$obj->$key = $value;
+			$params->$key = $value;
 		foreach($_POST as $key=>$value)
-			$obj->$key = $value;
-		return $obj;
+			$params->$key = $value;
+		return $params;
 	}
 	function requesturi()
 	{
@@ -128,6 +130,8 @@ class http_request {
 * Example Usage
 * Echos the HTTP Request back to the client/browser
 */
-
+global $params;
+$params =  new \StdClass();
 $httprequest = new http_request();
+//var_dump($httprequest->headers());
 ?>

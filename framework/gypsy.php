@@ -1,11 +1,13 @@
 <?php
+require_once __DIR__."/globals.php";
 require_once __DIR__."/settings.php";
 require_once __DIR__."/error.php";
 require_once __DIR__."/logging.php";
 require_once __DIR__."/http_request.php";
 require_once __DIR__."/router.php";
-
-
+require_once __DIR__."/utility.php";
+require_once __DIR__."/jirarest.php";
+require_once __DIR__."/mongo.php";
 // Sets Route
 // method can be any HTTP method, like GET, PUT etc (casesensitive)
 // $endpoint is the uri like  can be file or function 
@@ -59,10 +61,20 @@ function GetModuleEndPoint()
 			$resource .= '.php';
 	return $resource;
 }
+function GetRouteResource()
+{
+	global $currentroute;
+	return end($currentroute->parts);
+}
 function GetCurrentRoute()
 {
 	global $currentroute;
 	return $currentroute;
+}
+function GetSettings()
+{
+	global $settings;
+	return $settings;
 }
 function GetModulePath()
 {
@@ -72,13 +84,22 @@ function GetModulePath()
 function GetParams()
 {
 	global $httprequest;
-	return $httprequest->query();	
+	global $currentroute;
+	$params = $httprequest->query();
+	//$params->prop =$currentroute->properties;
+	foreach ($currentroute->properties as $key=>$value) 
+	{
+		$params->$key = $value;
+		//echo "$key => $obj[$key]\n";
+	}
+	return $params;
 }
 function GetRequestData()
 {
 	global $httprequest;
 	return $httprequest->body();	
 }
+//Modules Should send responses through this function
 function SendResponse($data=null,$error=null)
 {
 	global $logfile;
@@ -95,6 +116,40 @@ function SendResponse($data=null,$error=null)
 		echo json_encode($response);
 	fclose($logfile);
 	exit();
+}
+
+function multiexplode ($delimiters,$string) {
+
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+function ReadFiles($directory,$filter)
+{
+	$files = array();
+	$dir = opendir($directory); // open the cwd..also do an err check.
+	while(false != ($file = readdir($dir))) 
+	{
+		if(($file != ".") and ($file != "..")) 
+		{
+			//echo $file." ".is_dir($directory.$file).EOL;
+			//echo  is_dir($directory."//".$file).EOL;
+			
+			if(!is_dir($directory."//".$file))
+			{
+				if( strpos( $file, $filter ) !== false) 
+				{
+					$files[] = $file; // put in array.
+				}
+			}
+		}
+		//natsort($files); // sort.
+	}
+	return $files;
+}
+function CreateJiraRest()
+{
+	return new JiraRest();	
 }
 //require_once($DOCUMENT_ROOT.'http/reuest.php');
 ?>

@@ -2,7 +2,6 @@
 namespace gypsy;
 function HandleError($errno, $errstr,$error_file,$error_line) 
 {
-	echo "dd";
 	$msg = [$errno]." ".$errstr." - ".$error_file.":".$error_line;
 	LogError($msg);
 }
@@ -17,7 +16,7 @@ function SetupErrorHandler()
    set_exception_handler('gypsy\HandleExceptions');
 }
 if(isset($_GET['debug']))
-{}
+{ }
 //else
 //	SetupErrorHandler();
 ?>

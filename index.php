@@ -1,6 +1,7 @@
 <?php
 $app =  new StdClass();
 require_once('framework/gypsy.php');
+require_once('core/core.php');
 require_once('functions.php');
 //SetRoute('GET','/','modules/module1/index.php');
 //SetRoute('POST','/','modules/module1/index.php');

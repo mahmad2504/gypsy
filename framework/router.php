@@ -35,6 +35,8 @@ class Router
 	function Execute($method,$endpoint,$params,$data)
 	{
 		global $currentroute;
+		global $params;
+	
 		$parts = explode("/",$endpoint);
 		
 		if($parts[0]=='')
@@ -43,8 +45,24 @@ class Router
 			unset($parts[key($parts)]);
 		
 		$count = count($parts);
+		
 		foreach($this->routes as $route)
 		{
+			$rparts = explode('?',$route->resource);
+			$route->resource = $rparts[0];
+			if(count($rparts)>1)
+			{
+				$keyvalues = explode("&",$rparts[1]);
+				foreach($keyvalues as $keyvalue)
+				{
+					$keyvaluepair = explode("=",$keyvalue);
+					$key = $keyvaluepair[0];
+					$params->$key = $keyvaluepair[1];
+					//var_dump($keyvaluepair);
+				}
+				//var_dump($keyvalue);
+			}
+			//var_dump($route);
 			//echo $route->method."<br>";
 			if($route->method != 'ANY')
 				if($route->method != $method)
@@ -75,8 +93,19 @@ class Router
 					//$parts = explode("/",explode($route->uri,$endpoint)[1]);
 					$route->properties = $prop;
 					$currentroute=$route;
-					//echo "Selected Route is "."<BR>";
+					
+					foreach($currentroute->parts as &$part)
+					{
+						if($part[0] ==':')
+						{
+							$spart = substr($part,1,strlen($part));
+							$part = $route->properties->$spart;
+						}
+					}
+					//var_dump($currentroute->parts);
 					//var_dump($currentroute);
+					//echo "Selected Route is "."<BR>";
+					
 					$func  = $route->resource;
 					if(function_exists($func))
 					{
@@ -91,14 +120,20 @@ class Router
 				}
 			}
 		}
-		$func = $this->default;
+		$funcname =  end($parts);
+		
+		if(function_exists($funcname))
+		{
+			$funcname($params,$data);
+			return null;
+		}
+		$func = $this->default;	
 		if($this->default !=  null)
 			$func($method,$endpoint,$params,$data);
 	}
 }
 $router = new Router();
-$routes = json_decode(file_get_contents("routes.json"));
-foreach($routes as $route)
+foreach($settings->routes as $route)
 {
 	SetRoute($route->method,$route->uri,$route->endpoint);
 }
